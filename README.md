@@ -14,6 +14,8 @@
 - "End-To-End Memory Networks"->[http://arxiv.org/abs/1503.08895]
 - 知乎专栏介绍->[https://zhuanlan.zhihu.com/p/29679742]
 
-# result
+# Result
+...
 
 # Todo
+...
