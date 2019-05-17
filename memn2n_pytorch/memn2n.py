@@ -14,6 +14,7 @@ class MemNN(nn.Module):
         self.embed_size = embed_size
         self.temporal_encoding = te
         self.position_encoding = pe
+        self.max_story_len = max_story_len
 
         init_rng = 0.1
         self.dropout = nn.Dropout(p=dropout)
@@ -25,8 +26,8 @@ class MemNN(nn.Module):
 
         #Temporal encoding
         if self.temporal_encoding:
-            self.TA = nn.Parameter(torch.Tensor(1,max_story_len,embed_size).normal_(0,0.1))
-            self.TC = nn.Parameter(torch.Tensor(1,max_story_len,embed_size).normal_(0,0.1))
+            self.TA = nn.Parameter(torch.Tensor(1,max_story_len+1,embed_size).normal_(0,0.1))
+            self.TC = nn.Parameter(torch.Tensor(1,max_story_len+1,embed_size).normal_(0,0.1))
     def forward(self,x,q):
         '''
         :param x: [bs,story_len,s_sent_len]
@@ -34,8 +35,12 @@ class MemNN(nn.Module):
         :return:
         '''
         bs = x.size(0)
+
         story_len = x.size(1)
         s_sent_len = x.size(2)
+        # if story_len >=self.max_story_len:
+        #     story_len = self.max_story_len
+
 
         #position Encoding
         if self.position_encoding:
@@ -58,8 +63,17 @@ class MemNN(nn.Module):
             if self.position_encoding:
                 m*=pe #[bs,story_len,s_sent_len,embed_size]
             m = torch.sum(m,2) #[bs,story_len,embed_size]
+            m = m[:,:story_len,:]
             if self.temporal_encoding:
-                m+=self.TA.repeat(bs,1,1)[:,:story_len,:]
+                # print(m.size(1))
+                # if m.size(1)>self.TA.size(1):
+                #     n = self.TA.repeat(bs,1,1)[1]
+
+                n = self.TA.repeat(bs,1,1)[:,:story_len,:]
+                # print(story_len)
+                # print(n.size(1))
+                # print('-----')
+                m+=n
 
             c = self.dropout(self.A[k+1](x)) #[bs*story_len,s_sent_len,embed_size]
             c = c.view(bs,story_len,s_sent_len,-1)#[bs,story_len,s_sent_len,embed_size]
