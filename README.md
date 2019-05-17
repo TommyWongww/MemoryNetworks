@@ -4,11 +4,11 @@
 # Requirements
 - pytorch 0.4.0
 
-# dataset
+# Dataset
 
 - wget http://www.thespermwhale.com/jaseweston/babi/tasks_1-20_v1-2.tar.gz
 - tar xzvf ./data/tasks_1-20_v1-2.tar.gz
-put it into the data folder
+- put it into the data folder
 
 # Reference
 - "End-To-End Memory Networks"->[http://arxiv.org/abs/1503.08895]
