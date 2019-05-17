@@ -33,9 +33,7 @@
 |task14|acc:100.00%|
 |task15|acc:100.00%|
 |task16|acc:46.74%|
-|task17|acc:
-|task18|acc:22.27%|
-|task19|acc:100.00%|
-
-# Todo
-...
+|task17|acc:60.29%|
+|task18|acc:57.94%|
+|task19|acc:22.27%|
+|task20|acc:100.00%|
